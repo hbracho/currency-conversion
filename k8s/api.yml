@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: currency-conversion
+  ## namespace: develop
+  labels:
+    app: currency-conversion-rest
+    tags.datadoghq.com/env: "dev"
+    tags.datadoghq.com/service: "currency-conversion-dd"
+    tags.datadoghq.com/version: "v1.4"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: currency-conversion-rest
+  template:
+    metadata:
+      ## namespace: develop
+      labels:
+        app: currency-conversion-rest
+    spec:
+      containers:
+      - name: currency-conversion
+        #image: gcr.io/sbx-app/currency-conversion:latest
+        image: hbracho/currency-conversion:v1.4
+        ports:
+        - containerPort: 8080
+        env:
+        - name: DD_AGENT_HOST
+          valueFrom:
+            fieldRef:
+              fieldPath: status.hostIP
+        - name: DD_ENV
+          value: "dev"
+        - name: DD_SERVICE
+          value: "currency-conversion"
+        - name: DD_VERSION
+          value: "v1.4"
+        
+        - name: DD_LOGS_INJECTION
+          value: "true"
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: currency-conversion
+  ## namespace: develop
+  labels:
+    app: currency-conversion-rest
+spec:
+  selector:
+    app: currency-conversion-rest
+  ports:
+     - port: 8080
+  type: ClusterIP #NodePort #only apply LoadBalancer or NodePort app=api-gce
