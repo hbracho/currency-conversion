@@ -1,0 +1,19 @@
+kind: VirtualService
+apiVersion: networking.istio.io/v1alpha3
+metadata:
+  name: suscriber-vs
+  namespace: default
+spec:
+  hosts:      # which incoming host are we applying the proxy rules to???
+    - "*"
+  gateways:
+    - ingress-gateway-configuration
+  http:
+    - match:
+      - uri:
+          prefix: "/currency-converter/"
+      route:
+      - destination:
+          port:
+            number: 8080
+          host: currency-conversion
