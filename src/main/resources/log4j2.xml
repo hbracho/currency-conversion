@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+  <Appenders>
+    <File name="FILE" fileName="logs/app.log" >
+      <JSONLayout compact="true" eventEol="true" properties="true" stacktraceAsString="true" />
+    </File>
+    <Console name="Console" target="SYSTEM_OUT" follow="true">
+            <JSONLayout compact="true" eventEol="true" properties="true" stacktraceAsString="true" />
+     </Console>
+  </Appenders>
+
+  <Loggers>
+    <Root level="INFO">
+      <AppenderRef ref="FILE"/>
+      <AppenderRef ref="Console"/>
+    </Root>
+  </Loggers>
+</Configuration>

@@ -1,5 +1,6 @@
 FROM openjdk:8-jdk-alpine
 RUN apk --no-cache add curl
+RUN mkdir -m 777 logs
 RUN addgroup -S spring && adduser -S spring -G spring
 USER spring:spring
 ARG JAR_FILE=target/*.jar

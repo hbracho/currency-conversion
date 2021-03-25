@@ -13,39 +13,30 @@ import org.springframework.web.bind.annotation.RestController;
 public class CurrentConversionController {
 	
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
-	
+
 	@Autowired
 	private CurrencyExchangeServiceProxy proxy;
 	
-	@GetMapping("currency-converter/from/{from}/to/{to}/quantity/{quantity}") 
+	@GetMapping("currency-converter/from/{from}/to/{to}/quantity/{quantity}")
 	public CurrencyConversionBean convertCurrency(@PathVariable String from, 
 			@PathVariable String to, 
 			@PathVariable BigDecimal quantity) {
-		logger.info("--------ENTROOOOOOOO-----------");
+		logger.info("Emitted quantity=1001 messages during the last durationInMs=93180 ms for customer scope=prod30");
 		//return new CurrencyConversionBean(1L, from, to, quantity, BigDecimal.ONE, 8080);
 		CurrencyConversionBean response = null;
 		try {
 			response = proxy.retrieveExchangeValue(from, to);
 			logger.info("{}", response);
-			
+			return new CurrencyConversionBean(response.getId(), from, to, response.getConversionValue(), quantity,
+					quantity.multiply(response.getConversionValue()), response.getPort());
 		}catch (Exception e) {
 			// TODO: handle exception
 			logger.error(e.getMessage());
-			logger.error("--------other error-----------");
-			logger.error("--------other error-----------");
-			logger.error("--------other error-----------");
-			logger.error("--------other error-----------");
-			logger.error("--------other error-----------");
-			logger.error("--------other error-----------");
-			logger.error("--------other error-----------");
-			logger.error("--------other error-----------");
-			logger.error("--------other error-----------");
-			logger.error("--------other error-----------");
-			logger.error(e.getCause().toString());
+			logger.error("Errror during execution in the request",e.getCause());
+			return new CurrencyConversionBean();
 		}
 
-		return new CurrencyConversionBean(response.getId(), from, to, response.getConversionValue(), quantity,
-				quantity.multiply(response.getConversionValue()), response.getPort());
+		
 
 	}
 }

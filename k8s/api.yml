@@ -6,8 +6,8 @@ metadata:
   labels:
     app: currency-conversion-rest
     tags.datadoghq.com/env: "dev"
-    tags.datadoghq.com/service: "currency-conversion-dd"
-    tags.datadoghq.com/version: "v1.4"
+    tags.datadoghq.com/service: "currency-conversion"
+    tags.datadoghq.com/version: "v1.9.6"
 spec:
   replicas: 1
   selector:
@@ -15,31 +15,68 @@ spec:
       app: currency-conversion-rest
   template:
     metadata:
+      name: currency-conversion-pod
+      #annotations:
+      #  ad.datadoghq.com/currency-conversion.logs: '[<LOG_CONFIG>]'      
       ## namespace: develop
       labels:
         app: currency-conversion-rest
+        tags.datadoghq.com/env: "dev"
+        tags.datadoghq.com/service: "currency-conversion"
+        tags.datadoghq.com/version: "v1.9.6"
+      #annotations:
+      #  ad.datadoghq.com/currency-conversion.logs: |-
+      #    [{
+      #      "source": "java",
+      #      "log_processing_rules": [
+      #        {
+      #          "type": "multi_line",
+      #          "name": "log_start_with_date",
+      #          "pattern": "\\d{4}-(0?[1-9]|1[012])-(0?[1-9]|[12][0-9]|3[01])"
+      #        }
+      #      ]
+      #    }]  
+               
     spec:
       containers:
       - name: currency-conversion
         #image: gcr.io/sbx-app/currency-conversion:latest
-        image: hbracho/currency-conversion:v1.4
+        image: hbracho/currency-conversion:v1.9.6
         ports:
         - containerPort: 8080
         env:
-        - name: DD_AGENT_HOST
-          valueFrom:
-            fieldRef:
-              fieldPath: status.hostIP
-        - name: DD_ENV
-          value: "dev"
-        - name: DD_SERVICE
-          value: "currency-conversion"
-        - name: DD_VERSION
-          value: "v1.4"
-        
-        - name: DD_LOGS_INJECTION
-          value: "true"
+          - name: DD_ENV
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.labels['tags.datadoghq.com/env']
+          - name: DD_SERVICE
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.labels['tags.datadoghq.com/service']
+          - name: DD_VERSION
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.labels['tags.datadoghq.com/version']        
+          - name: DD_AGENT_HOST
+            valueFrom:
+              fieldRef:
+                fieldPath: status.hostIP
+          - name: DD_LOGS_INJECTION
+            value: "true"                
+        #- name: DD_ENV
+        #  value: "dev"
+        #- name: DD_SERVICE
+        #  value: "currency-conversion"
+        #- name: DD_VERSION
+        #  value: "v1.7"        
+        #- name: DD_LOGS_INJECTION
+        #  value: "true"
+        #- name: DD_DOGSTATSD_NON_LOCAL_TRAFFIC
+        #  value: "true"
+        #- name: DD_TRACE_ANALYTICS_ENABLED
+        #  value: "true"
 
+            
 ---
 
 apiVersion: v1
