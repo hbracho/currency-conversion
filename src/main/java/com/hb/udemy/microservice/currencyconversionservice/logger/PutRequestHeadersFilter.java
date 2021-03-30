@@ -52,7 +52,8 @@ public class PutRequestHeadersFilter implements Filter  {
     {
         	UriComponentsBuilder builder = ServletUriComponentsBuilder.fromCurrentRequest();
             HttpServletRequest req = (HttpServletRequest) request;
-            ThreadContext.put("ATTRIBUTES", "{\"app_name\":\"developerportal\", \"channel\":\"web\"}");
+            ThreadContext.put("custom_name", "harold");
+            ThreadContext.put("custom_id", "123456");
             chain.doFilter(request, response);
     }
        

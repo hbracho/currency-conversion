@@ -7,7 +7,7 @@ metadata:
     app: currency-conversion-rest
     tags.datadoghq.com/env: "dev"
     tags.datadoghq.com/service: "currency-conversion"
-    tags.datadoghq.com/version: "v1.9.12"
+    tags.datadoghq.com/version: "v1.9.13"
 spec:
   replicas: 1
   selector:
@@ -23,7 +23,7 @@ spec:
         app: currency-conversion-rest
         tags.datadoghq.com/env: "dev"
         tags.datadoghq.com/service: "currency-conversion"
-        tags.datadoghq.com/version: "v1.9.12"
+        tags.datadoghq.com/version: "v1.9.13"
       #annotations:
       #  ad.datadoghq.com/currency-conversion.logs: |-
       #    [{
@@ -41,7 +41,7 @@ spec:
       containers:
       - name: currency-conversion
         #image: gcr.io/sbx-app/currency-conversion:latest
-        image: hbracho/currency-conversion:v1.9.12
+        image: hbracho/currency-conversion:v1.9.13
         ports:
         - containerPort: 8080
         env:
