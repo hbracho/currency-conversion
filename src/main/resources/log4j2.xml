@@ -1,18 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Configuration>
-  <Appenders>
-    <File name="FILE" fileName="logs/app.log" >
-      <JSONLayout compact="true" eventEol="true" properties="true" stacktraceAsString="true" />
-    </File>
-    <Console name="Console" target="SYSTEM_OUT" follow="true">
-            <JSONLayout compact="true" eventEol="true" properties="true" stacktraceAsString="true" />
-     </Console>
-  </Appenders>
+<Configuration status="INFO">
 
-  <Loggers>
-    <Root level="INFO">
-      <AppenderRef ref="FILE"/>
-      <AppenderRef ref="Console"/>
-    </Root>
-  </Loggers>
+    <Properties>
+        <Property name="APP_NAME">ciam-service-registration</Property>
+        <Property name="LOG_DIR">logs/ciam-service-registration/v1</Property>
+        <Property name="LOG_HISTORY">logs/ciam-service-registration/historic</Property>
+        <Property name="PATTERN">{&quot;timestamp&quot;: &quot;%d{yyyy-MM-dd HH:mm:ss.SSS}&quot;, &quot;trace_id&quot;: &quot;%X{dd.trace_id}&quot;, &quot;span_id&quot;:&quot;%X{dd.span_id}&quot;, &quot;level&quot;: &quot;%p&quot;, &quot;name&quot;: &quot;%X{NAME}&quot;, &quot;message&quot;: &quot;%msg&quot;, &quot;resources&quot;: {&quot;%X{RESOURCES}&quot;}, &quot;attributes&quot;: &quot;%X{ATTRIBUTES}&quot;} %n</Property>
+    </Properties>
+
+    <Appenders>
+        <Console name="console" target="SYSTEM_OUT">
+            <PatternLayout pattern="${PATTERN}" />
+        </Console>
+
+        <Async name="Async" bufferSize="1048576">
+            <AppenderRef ref="console"  />
+        </Async>
+
+    </Appenders>
+
+    <Loggers>
+        <Root level="info" additivity="false">
+            <AppenderRef ref="Async" />
+        </Root>      
+    </Loggers> 
+          
 </Configuration>

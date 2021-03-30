@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: currency-conversion
+  ## namespace: develop
+  labels:
+    app: currency-conversion-rest
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: currency-conversion-rest
+  template:
+    metadata:
+      ## namespace: develop
+      labels:
+        app: currency-conversion-rest
+    spec:
+      containers:
+      - name: currency-conversion
+        #image: gcr.io/sbx-app/currency-conversion:latest
+        image: hbracho/currency-conversion:v1.0
+        ports:
+        - containerPort: 8080
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: currency-conversion
+  ## namespace: develop
+  labels:
+    app: currency-conversion-rest
+spec:
+  selector:
+    app: currency-conversion-rest
+  ports:
+     - port: 8080
+  type: ClusterIP #NodePort #only apply LoadBalancer or NodePort app=api-gce
