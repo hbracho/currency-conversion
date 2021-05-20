@@ -1,18 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration>
+
+	<Properties>
+        <Property name="APP_NAME">ciam-service-registration</Property>
+        <Property name="LOG_DIR">logs/ciam-service-registration/v1</Property>
+        <Property name="LOG_HISTORY">logs/ciam-service-registration/historic</Property>
+        <Property name="PATTERN">{&quot;timestamp&quot;: &quot;%d{yyyy-MM-dd HH:mm:ss.SSS}&quot;, &quot;level&quot;: &quot;%p&quot;, &quot;layer&quot;: &quot;%X{LAYER}&quot;, &quot;httpMessageType&quot;: &quot;%X{HTTP_MESSAGE_TYPE}&quot;, &quot;srvRef&quot;: &quot;%X{X_SRVREF}&quot;, &quot;txRef&quot;: &quot;%X{X_TXREF}&quot;, &quot;usrTx&quot;: &quot;%X{X_USRTX}&quot;, &quot;cmRef&quot;: &quot;%X{X_CMREF}&quot;, &quot;nodeRef&quot;: &quot;%X{X_NODEREF}&quot;, &quot;rhsRef&quot;: &quot;%X{X_RHSREF}&quot;, &quot;chRef&quot;: &quot;%X{X_CHREF}&quot;, &quot;prRef&quot;: &quot;%logger{36}&quot;, &quot;commerce&quot;: &quot;%X{X_COMMERCE}&quot;, &quot;country&quot;: &quot;%X{X_COUNTRY}&quot;, &quot;environment&quot;: &quot;%X{X_ENVIRONMENT}&quot;, &quot;businessUnit&quot;: &quot;%X{X_BUSINESSUNIT}&quot;, &quot;systemDevice&quot;: &quot;%X{X_SYSTEMDEVICE}&quot;, &quot;systemVersionDevice&quot;: &quot;%X{X_SYSTEMVERSIONDEVICE}&quot;, &quot;cmDateTime&quot;: &quot;%X{X_CMDATETIME}&quot;, &quot;groupId&quot;: &quot;%X{GROUP_ID}&quot;, &quot;operationId&quot;: &quot;%X{OPERATION_ID}&quot;, &quot;http_status&quot;: &quot;%X{HTTP_STATUS}&quot;, &quot;attempt&quot;: %X{ATTEMPT}, &quot;timeResponse&quot;: %X{TIME_RESPONSE}, &quot;traceId&quot;: &quot;%X{X-B3-TraceId}&quot;, &quot;spanId&quot;: &quot;%X{X-B3-SpanId}&quot;, &quot;message&quot;: &quot;%msg&quot;} %n</Property>
+    </Properties>
+    
   <Appenders>
+    
     <File name="FILE" fileName="logs/app.log" >
       <JSONLayout compact="true" eventEol="true" properties="true" stacktraceAsString="true" />
     </File>
-    <Console name="Console" target="SYSTEM_OUT" follow="true">
-            <JSONLayout compact="true" eventEol="true" properties="true" stacktraceAsString="true" propertiesAsList="true"/>
+    
+    <Console name="Console" target="SYSTEM_OUT" follow="true" >
+            <JSONLayout compact="false" eventEol="true" properties="true" stacktraceAsString="true" includeTimeMillis="true">
+            	<!-- <KeyValuePair key="contextMap.corp.country" value="cl"/>
+            	<KeyValuePair key="contextMap.corp.channel" value="web"/>
+            	<KeyValuePair key="contextMap.corp.commerce" value="commerce"/> -->
+            	
+            </JSONLayout>
      </Console>
+     
+     
+     <Console name="falabella" target="SYSTEM_OUT">
+            <PatternLayout pattern="${PATTERN}" />
+     </Console>
+        
   </Appenders>
 
   <Loggers>
     <Root level="INFO">
       <AppenderRef ref="FILE"/>
       <AppenderRef ref="Console"/>
+      <!-- <AppenderRef ref="falabella"  /> -->
     </Root>
   </Loggers>
 </Configuration>

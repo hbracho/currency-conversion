@@ -23,43 +23,46 @@ import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.web.util.UriComponentsBuilder;
+import org.json.JSONObject;
 
 @Order(-1)
 @Component
-public class PutRequestHeadersFilter implements Filter  {
-	
-    private Logger logger = LoggerFactory.getLogger(PutRequestHeadersFilter.class);
-    
-    @Autowired
-    private Environment env;
-    
-    @Autowired
-    private ContextLogger envCiam;
-    
+public class PutRequestHeadersFilter implements Filter {
+
+	private Logger logger = LoggerFactory.getLogger(PutRequestHeadersFilter.class);
+
+	@Autowired
+	private Environment env;
+
+	@Autowired
+	private ContextLogger envCiam;
+
 	/*
 	 * @Autowired private AppInfo appInfo;
 	 */
-    
-    private static final String OPERATION_ID = "OPERATION_ID";
-    
+
+	private static final String OPERATION_ID = "OPERATION_ID";
+
 	@Override
 	public void init(final FilterConfig filterConfig) throws ServletException {
-    	logger.info("Initializing filter :{}", this);
+		logger.info("Initializing filter :{}", this);
 	}
-    
-    @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException 
-    {
-        	UriComponentsBuilder builder = ServletUriComponentsBuilder.fromCurrentRequest();
-            HttpServletRequest req = (HttpServletRequest) request;
-            ThreadContext.put("custom_name", "harold");
-            ThreadContext.put("custom_id", "123456");
-            chain.doFilter(request, response);
-    }
-       
+
+	@Override
+	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+			throws IOException, ServletException {
+
+		UriComponentsBuilder builder = ServletUriComponentsBuilder.fromCurrentRequest();
+		HttpServletRequest req = (HttpServletRequest) request;
+		ThreadContext.put("user.custom_name", "harold");
+		ThreadContext.put("user.custom_id", "123456");
+
+		chain.doFilter(request, response);
+	}
+
 	@Override
 	public void destroy() {
 		logger.warn("Destructing filter :{}", this);
 	}
-	
+
 }

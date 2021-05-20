@@ -17,3 +17,21 @@ spec:
           port:
             number: 8080
           host: currency-conversion
+    - match:
+      - uri:
+          prefix: "/tasks/"
+      - uri:
+          prefix: "/auth/"          
+      route:
+      - destination:
+          port:
+            number: 3000
+          host: task-service          
+    - match:
+      - uri:
+          prefix: "/tasks"
+      route:
+      - destination:
+          port:
+            number: 3000
+          host: task-service      
